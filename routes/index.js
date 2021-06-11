@@ -80,7 +80,7 @@ router.post('/create-checkout-session', async(req, res) => {
           'currency': 'eur',
           'product_data': {
             'name': card[i].name,
-            'images': `${DOMAIN_NAME}/${[card[i].url]}`,
+            'images': `${DOMAIN_NAME}${[card[i].url]}`,
           },
           'unit_amount': card[i].price * 100,
         },
@@ -88,7 +88,7 @@ router.post('/create-checkout-session', async(req, res) => {
       }
     )
   };
-  ////console.log(items);
+  console.log('TTTEEESSSTTT : ', items[0].price_data.product_data.images);
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: items,
