@@ -3,6 +3,10 @@ const stripe = require('stripe')('sk_test_51J164oAfrlmqxkAXQuOmCXameFfJEz6Pfoayb
 var express = require('express');
 var router = express.Router();
 
+let DOMAIN_NAME = '';
+
+
+
 var dataBike = [
   {name:"BIK045", url:"/images/bike-1.jpg", price:679},
   {name:"ZOOK07", url:"/images/bike-2.jpg", price:999},
@@ -15,7 +19,8 @@ var dataBike = [
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-
+  DOMAIN_NAME = req.protocol + '://' + req.get('host');
+  //console.log(DOMAIN_NAME);
   if(req.session.dataCardBike == undefined){
     req.session.dataCardBike = []
   }
@@ -88,8 +93,8 @@ router.post('/create-checkout-session', async(req, res) => {
     payment_method_types: ['card'],
     line_items: items,
     mode: 'payment',
-    success_url: `http://localhost:3000/success`,
-    cancel_url: `http://localhost:3000/cancel`,
+    success_url: `${DOMAIN_NAME}/success`,
+    cancel_url: `${DOMAIN_NAME}/cancel`,
   });
   //console.log(session.id);
   res.json({ id: session.id });
